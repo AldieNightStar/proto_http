@@ -1,7 +1,7 @@
 # HTTP Proto
 
 # Import
-https://jitpack.io/#AldieNightStar/proto_http
+[![](https://jitpack.io/v/AldieNightStar/proto_http.svg)](https://jitpack.io/#AldieNightStar/proto_http)
 
 # Usage
 ```java
