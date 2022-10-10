@@ -1,5 +1,8 @@
 # HTTP Proto
 
+# Import
+https://jitpack.io/#AldieNightStar/proto_http
+
 # Usage
 ```java
 
