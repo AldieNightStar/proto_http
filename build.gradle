@@ -9,6 +9,12 @@ repositories {
     mavenCentral()
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
 dependencies {
     // implementation("com.google.code.gson:gson:2.9.0")
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
