@@ -36,5 +36,19 @@ class Main {
         return new Point(req.x * 2, req.y * 2);
     }
 }
+```
 
+# Usage from JavaScript
+```javascript
+async function req(name, req) {
+    let text = await (
+        await fetch("http://localhost:8080/" + name,
+            {method:"POST", body: JSON.stringify(req)}
+        )
+    ).text();
+    return JSON.parse(text);
+}
+
+// Sample
+await req("game/all", "")
 ```
