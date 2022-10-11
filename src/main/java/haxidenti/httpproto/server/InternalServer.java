@@ -4,13 +4,20 @@ import com.sun.net.httpserver.HttpServer;
 import haxidenti.httpproto.Endpoint;
 import haxidenti.httpproto.Server;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class InternalServer implements Server {
+public class InternalServer implements Server, Closeable {
 
     HttpServer server;
 
     private int port;
+
+    private Map<String, Endpoint> endpoints = new HashMap<>(32);
 
     private boolean isServing;
 
@@ -20,7 +27,7 @@ public class InternalServer implements Server {
 
     @Override
     public void register(String path, Endpoint endpoint) {
-        server.createContext(path, new Handler(endpoint));
+        endpoints.put(path, endpoint);
     }
 
     @Override
@@ -29,6 +36,7 @@ public class InternalServer implements Server {
             if (isServing) return;
             isServing = true;
             server = HttpServer.create(new InetSocketAddress(port), 0);
+            endpoints.forEach((path, endpoint) -> server.createContext(path, new Handler(endpoint)));
             server.start();
         } catch (Exception e) {
             isServing = false;
@@ -40,5 +48,10 @@ public class InternalServer implements Server {
     public void stop() {
         isServing = false;
         server.stop(1000);
+    }
+
+    @Override
+    public void close() throws IOException {
+        stop();
     }
 }

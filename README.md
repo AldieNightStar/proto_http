@@ -31,6 +31,7 @@ class Main {
     }
 
     // Handler
+    @ApiMethod("test1") // Will serve as "api/test1"
     public Point test1(Point req) {
         return new Point(req.x * 2, req.y * 2);
     }

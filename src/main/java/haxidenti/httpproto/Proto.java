@@ -17,9 +17,10 @@ public class Proto {
     public void register(String name, Object service) {
         for (Method method : service.getClass().getDeclaredMethods()) {
             if (method.getParameterTypes().length != 1) continue;
+            if (method.getAnnotation(ApiMethod.class) == null) continue;
+            String apiName = method.getAnnotation(ApiMethod.class).value();
             Class<?> argType = method.getParameterTypes()[0];
-            Class<?> retType = method.getReturnType();
-            String path = "/" + name + "/" + method.getName();
+            String path = "/" + name + "/" + (apiName.isBlank() ? method.getName() : apiName);
             server.register(path, (req, res) -> {
                 try {
                     String response = coder.toJson(

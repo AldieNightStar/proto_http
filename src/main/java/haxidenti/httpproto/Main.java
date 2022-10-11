@@ -17,6 +17,7 @@ class Main {
         proto.start();
     }
 
+    @ApiMethod("abc")
     public Point test1(Point req) {
         return new Point(req.x * 2, req.y * 2);
     }
