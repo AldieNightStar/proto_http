@@ -40,8 +40,6 @@ class Main {
 
 # Usage from JavaScript
 ```javascript
-const host = "http://localhost:8080"
-
 async function req(host, name, req) {
     let text = await (
         await fetch(host + "/" + name,
@@ -52,5 +50,6 @@ async function req(host, name, req) {
 }
 
 // Sample
-await req("game/all", "")
+const host = "http://localhost:8080"
+await req(host, "game/all", "")
 ```
