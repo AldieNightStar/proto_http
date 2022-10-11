@@ -47,6 +47,7 @@ public class Handler implements HttpHandler {
         }, (status, body) -> {
             try {
                 byte[] data = body.getBytes(StandardCharsets.UTF_8);
+                exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
                 exchange.sendResponseHeaders(status, data.length);
                 OutputStream out = exchange.getResponseBody();
                 out.write(data);
