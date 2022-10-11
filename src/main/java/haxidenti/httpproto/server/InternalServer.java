@@ -27,6 +27,7 @@ public class InternalServer implements Server, Closeable {
 
     @Override
     public void register(String path, Endpoint endpoint) {
+        if (isServing) throw new RuntimeException("Server is already running. Need to stop it to make register work ok");
         endpoints.put(path, endpoint);
     }
 
