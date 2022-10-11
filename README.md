@@ -40,9 +40,11 @@ class Main {
 
 # Usage from JavaScript
 ```javascript
-async function req(name, req) {
+const host = "http://localhost:8080"
+
+async function req(host, name, req) {
     let text = await (
-        await fetch("http://localhost:8080/" + name,
+        await fetch(host + "/" + name,
             {method:"POST", body: JSON.stringify(req)}
         )
     ).text();
