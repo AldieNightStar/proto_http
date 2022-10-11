@@ -21,4 +21,9 @@ class Main {
     public Point test1(Point req) {
         return new Point(req.x * 2, req.y * 2);
     }
+
+    @ApiMethod
+    public Point getPoint() {
+        return new Point(32, 12);
+    }
 }
