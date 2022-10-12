@@ -54,5 +54,8 @@ document.body.appendChild((() => {
 let proto = new Proto(host);
 
 // Call method on remote
-await proto.call("api/abc", {x:10, y:20}); 
+await proto.call("api/abc", {x:10, y:20});
+
+// Call method on remote and define default value in case of fail
+await proto.call("api/abc", {x:10, y:20}, {x:0, y:0});
 ```
