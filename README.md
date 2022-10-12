@@ -40,16 +40,19 @@ class Main {
 
 # Usage from JavaScript
 ```javascript
-async function req(host, name, req) {
-    let text = await (
-        await fetch(host + "/" + name,
-            {method:"POST", body: JSON.stringify(req)}
-        )
-    ).text();
-    return JSON.parse(text);
-}
+// Define host
+let host = "http://localhost:8080";
 
-// Sample
-const host = "http://localhost:8080"
-await req(host, "game/all", "")
+// Import script API from server
+document.body.appendChild((() => {
+        let s = document.createElement("script");
+        s.src = host + "/proto.js";
+        return s;
+})());
+
+// Define API from imported script and defined host
+let proto = new Proto(host);
+
+// Call method on remote
+await proto.call("api/abc", {x:10, y:20}); 
 ```

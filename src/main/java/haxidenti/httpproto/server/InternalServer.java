@@ -1,17 +1,21 @@
 package haxidenti.httpproto.server;
 
+import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpServer;
 import haxidenti.httpproto.Endpoint;
 import haxidenti.httpproto.Server;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class InternalServer implements Server, Closeable {
 
@@ -42,6 +46,22 @@ public class InternalServer implements Server, Closeable {
             isServing = true;
             server = HttpServer.create(new InetSocketAddress(port), 0);
             endpoints.forEach((path, endpoint) -> server.createContext(path, new Handler(endpoint)));
+            server.createContext("/proto.js", exchange -> {
+                try {
+                    Headers headers = exchange.getResponseHeaders();
+                    headers.add("Access-Control-Allow-Origin", "*");
+                    headers.add("Content-Type", "application/json");
+                    try (InputStream resourceAsStream = Server.class.getResourceAsStream( "proto.js")) {
+                        byte[] data = resourceAsStream.readAllBytes();
+                        exchange.sendResponseHeaders(200, data.length);
+                        OutputStream out = exchange.getResponseBody();
+                        out.write(data);
+                        out.close();
+                    }
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            });
             server.setExecutor(executor);
             server.start();
         } catch (Exception e) {
