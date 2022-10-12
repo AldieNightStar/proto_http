@@ -43,19 +43,25 @@ class Main {
 // Define host
 let host = "http://localhost:8080";
 
-// Import script API from server
+// Import script
 document.body.appendChild((() => {
         let s = document.createElement("script");
         s.src = host + "/proto.js";
         return s;
 })());
 
-// Define API from imported script and defined host
-let proto = new Proto(host);
+// Use that script only when window loaded
+window.addEventListener("load", async () => {
+    // Create client for proto
+    let proto = new Proto(host);
 
-// Call method on remote
-await proto.call("api/abc", {x:10, y:20});
-
-// Call method on remote and define default value in case of fail
-await proto.call("api/abc", {x:10, y:20}, {x:0, y:0});
+    // Call method. Will return result, otherwise null
+    let res = await proto.call("api/abc", {x:10, y:20});
+    
+    // Call method. Will return result, otherwise last argument
+    let res = await proto.call("api/abc", {x:10, y:20}, {x:0, y:0});
+    
+    // Print out the result
+    console.log(res);
+})
 ```
